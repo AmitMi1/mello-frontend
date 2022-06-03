@@ -1,0 +1,73 @@
+.board-share-menu {
+    ::-webkit-scrollbar {
+        border-radius: 4px;
+        width: 5px;
+        // length: 150%;
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #bfc4ce;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+        // margin-bottom: 500px;
+        border-radius: 4px;
+        min-height: 3000px;
+        background: #dadbe2;
+    }
+
+    .custom-menu-container {
+        @media (max-width: 560px) {
+            top: 310px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        z-index: 3;
+        top: 88px;
+        left: 370px;
+        width: 280px;
+
+        .users {
+
+            max-height: 200px;
+            overflow-y: auto;
+
+
+            .user {
+                padding-block: 10px;
+                padding-inline: 15px;
+                position: relative;
+
+                .member-mark {
+                    font-family: trellicons;
+                    font-size: 1.2rem;
+                    position: absolute;
+                    right: 15px;
+
+                    &::before {
+                        content: "\e916";
+                    }
+                }
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.092);
+                }
+
+                gap: 10px;
+                transition: background-color 200ms ease-in;
+
+                &:hover {
+                    background-color: rgb(244, 244, 244);
+                }
+
+                &:active {
+                    background-color: rgb(235, 235, 235);
+                }
+            }
+        }
+    }
+
+}
