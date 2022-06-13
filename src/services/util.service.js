@@ -24,19 +24,16 @@ function getRndIntInc(min, max) {
 }
 
 function applyDrag(arr, dragResult) {
-    console.log('arr>>', arr, 'drag', dragResult);
     const { removedIndex, addedIndex, payload } = dragResult;
     if (removedIndex === null && addedIndex === null) return arr;
     const result = [...arr];
     let itemToAdd = payload;
     if (removedIndex !== null) {
         itemToAdd = result.splice(removedIndex, 1)[0];
-        // console.log(itemToAdd);
     }
     if (addedIndex !== null) {
         result.splice(addedIndex, 0, itemToAdd);
     }
-    console.log(result);
     return result;
 }
 

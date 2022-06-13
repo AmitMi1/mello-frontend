@@ -89,24 +89,10 @@
             <span>{{ currStatus.txt }}</span>
         </div>
         <button @click.stop="openSearch" class="btn-search-photo">Search for photos</button>
-
-       
-        <!-- <button class="btn-upload-cover">Upload a cover image</button> -->
-            <!-- <div class="cover-opt">
-             
-
-            </div>
-            <div class="cover-opt">
-                <div>
-
-                </div>
-            </div>
-       </div> -->
     </section>
 </template>
 
 <script>
-// import { json } from "stream/consumers";
 import { uploadImg } from "../../services/imgUpload.service";
 
 
@@ -145,43 +131,33 @@ export default {
     },
     methods: {
         openSearch(){
-            // debugger
             this.$emit('openSearch')
         },
         async onUpload(ev) {
-            console.log('ev.target.files[0]', ev.target.files[0]);
             this.currStatus = this.statusOptions.loading;
             try {
                 const attachment = await uploadImg(ev)
-                console.log(attachment);
                 if (!this.taskToEdit.attachments) this.taskToEdit.attachments = [];
                 this.taskToEdit.attachments.push(attachment)
-                console.log('this.taskToEdit', this.taskToEdit);
                 this.$emit('taskUpdated', this.taskToEdit)
                 this.currStatus = this.statusOptions.complete
             } catch (err) {
                 this.currStatus = this.statusOptions.failed
             }
-            // setTimeout(this.closeModal, 2000)
         },
         setCoverClr(clr){
-           console.log(this.taskToEdit);
             if(!this.taskToEdit.style) this.taskToEdit.style = {}
             this.taskToEdit.style.bg = clr 
             if(!this.taskToEdit.style.size) this.taskToEdit.style.size = 'small'
             this.$emit('taskUpdated', this.taskToEdit)
-            // console.log(this.currTask);
        },
         setCoverImg(pic){
-        //    console.log(this.taskToEdit);
             if(!this.taskToEdit.style) this.taskToEdit.style = {}
             this.taskToEdit.style.bg = pic
             if(!this.taskToEdit.style.size) this.taskToEdit.style.size = 'big'
             this.$emit('taskUpdated', this.taskToEdit)
-            console.log(this.currTask);
        },
        setCoverSize(size){
-           console.log(this.taskToEdit);
             if(!this.taskToEdit.style) this.taskToEdit.style = {}
             this.taskToEdit.style.size = size 
             if(!this.taskToEdit.style.bg) this.taskToEdit.style.bg = '#7BC86C'
@@ -189,41 +165,31 @@ export default {
        },
        removeCover(){
            delete this.taskToEdit.style
-           console.log(this.taskToEdit);
             this.$emit('taskUpdated', this.taskToEdit)
        },
 
     },
     computed: {
         getBg(){
-            // if
             var bg = JSON.parse(JSON.stringify(this.currTask))
             if(!bg.style){
             bg.style = {}
             bg.style.bg = ''
             }
-            // console.log(this.taskToEdit.style.bg);
             if(bg.style.bg){
-                console.log(bg.style);
                 if(bg.style.bg.split('')[0] === '#')
                 return `background-color: ${bg.style.bg}; opacity:1`
                 else return `background-image: url('${bg.style.bg}'); opacity:1; background-color:transparent;`
             }
-            // return `background-color: ${bg.style.bg}`
-            //  return `background-color: ${this.taskToEdit.style.bg}` 
-            // return {'background-color': this.taskToEdit.style.bg}
-            // return `background-color: ${this.taskToEdit.style.bg}; position: absolute`
+           
         },
         getLine(){
-            // console.log(this.currTask);
             if(!this.currTask.style) return
             else return 'colorized'
         },
         
         taskToEdit() {
             const task = JSON.parse(JSON.stringify(this.currTask))
-            // if(!task.style) task.style = {}
-            // task.style.bg = ''
             return task
         },
     },

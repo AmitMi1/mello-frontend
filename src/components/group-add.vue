@@ -1,5 +1,5 @@
 <template>
-<section>
+<section class="group-add-section">
   
   <div v-if="isAddingGroup" @click="addGroup" class="group-add">
       <div class="flex align-center">
@@ -7,8 +7,7 @@
           <span>Add another list</span>
      </div>
   </div>
-  <!-- <Transition enter-active-class="animate__animated animate__fadeIn animate__faster"
-    leave-active-class="animate__animated animate__fadeOut animate__faster"> -->
+  
   <div v-if="!isAddingGroup" class="group-edit">
       <form type="submit" @submit.prevent="saveGroup">
         <input type="text"
@@ -20,11 +19,9 @@
         <button>Add list</button>
         <button @click="closeGroupAdd"></button>
         </div>
-          <!-- <span>+</span>
-          <span>Add another list</span> -->
+          
      </form>
   </div>
-  <!-- </Transition> -->
 </section>
 </template>
 
@@ -50,7 +47,6 @@ export default {
     },
     saveGroup(){
       this.groupToAdd.title = this.groupToAdd.title.trim()
-      console.log('group>>',this.groupToAdd);
       if(!this.groupToAdd.title) return
       this.$emit('saveGroup', this.groupToAdd)
       this.groupToAdd = boardService.getEmptyGroup()

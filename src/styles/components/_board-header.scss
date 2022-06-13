@@ -8,8 +8,8 @@
         @media (max-width: 780px) {
             position: absolute;
             top: 90px;
-            // left: 180px;
-            right: 135px;
+            left: 15px;
+            // right: 135px;
         }
 
         .btn-share-board {
@@ -145,10 +145,12 @@
         padding-inline-end: 12px;
 
         @media (max-width: 780px) {
-            position: absolute;
-            top: 90px;
-            left: 10px;
-            display: none;
+            padding-inline-start: 5px;
+            padding-inline-end: 5px;
+            // position: absolute;
+            // top: 90px;
+            // left: 10px;
+            // display: none;
         }
     }
 
@@ -157,13 +159,13 @@
         color: hsla(0, 0%, 100%, 0.3);
 
         @media (max-width: 780px) {
-            display: none;
+            // display: none;
 
             &.sub {
-                display: block;
-                position: absolute;
-                top: 90px;
-                right: 120px;
+                // display: block;
+                // position: absolute;
+                // top: 90px;
+                // right: 120px;
             }
         }
     }

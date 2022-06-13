@@ -34,6 +34,10 @@ body {
   // transition: transform .2s;
 }
 
+.smooth-dnd-draggable-wrapper {
+  height: min-content !important;
+}
+
 .item-drag {
 
   // transition: transform .2s;
@@ -60,11 +64,16 @@ html {
     min-height: 1px;
     height: min-content;
     // height: auto;
-    max-height: calc(100vh - 270px) !important;
+    max-height: calc(100vh - 280px) !important;
 
-    &:hover {
-      min-height: fit-content;
+    @media (max-width: 780px) {
+      max-height: calc(100vh - 300px) !important;
+
     }
+
+    // &:hover {
+    //   min-height: fit-content;
+    // }
   }
 
   img {

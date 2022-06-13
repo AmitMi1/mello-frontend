@@ -34,7 +34,6 @@
             <p class="msg">Deleting an attachment is permanent. There is no undo.</p>
             <button @click="removeAttachment" class="delete-btn btn">Delete</button>
         </Teleport>
-        <!-- <pre>{{ attachments }}</pre> -->
     </section>
 </template>
 
@@ -57,7 +56,6 @@ export default {
     },
     methods: {
         removeAttachment() {
-            // console.log('removeing');
             this.updatedAttachments.splice(this.attachmentToEditIdx, 1)
             this.$emit('updated', this.updatedAttachments)
             this.$emit('editModalClosed')
@@ -66,7 +64,6 @@ export default {
             this.$emit('editModalOpened', event)
         },
         openDeleteModal(event, attachmentIdx) {
-            console.log('event', event);
             this.attachmentToEditIdx = attachmentIdx
             this.isDeleteContentTeleported = true
             this.$emit('teleportContainerOpened', event)
@@ -77,50 +74,9 @@ export default {
             this.$emit('teleportContainerOpened', event)
         },
         formatCreatedAt(attachment) {
-            // return attachment.created_at
             const createdAt = new Date(attachment.created_at).getTime()
-            console.log('createdAt', createdAt);
             return format(createdAt, 'MMM d') + ' at ' + format(createdAt, 'HH:MM')
         }
-        // saveChecklist() {
-        //     const checklistToSave = JSON.parse(JSON.stringify(this.updatedChecklist))
-        //     this.$emit('updated', checklistToSave)
-        // },
-        // toggleTodoStatus(todoIdx) {
-        //     const todo = this.updatedChecklist.todos[todoIdx]
-        //     todo.isDone = !todo.isDone
-        //     this.saveChecklist()
-        // },
-        // updateChecklistTitle(updatedTitle) {
-        //     this.updatedChecklist.title = updatedTitle
-        //     this.saveChecklist()
-        // },
-        // updateTodoTitle(updatedTitle, todoId) {
-        //     // console.log('updatedTitle', updatedTitle);
-        //     // this.$emit('updated', this.updatedDesc)
-        //     const idx = this.updatedChecklist.todos.findIndex(todo => todo.id === todoId)
-        //     this.updatedChecklist.todos[idx].title = updatedTitle
-        //     this.saveChecklist()
-        // },
-        // removeTodo(todoIdx) {
-        //     this.updatedChecklist.todos.splice(todoIdx, 1)
-        //     this.saveChecklist()
-
-        // },
-        // addTodo(title) {
-        //     this.updatedChecklist.todos.push({
-        //         id: utilService.makeId(),
-        //         title,
-        //         isDone: false
-        //     })
-        //     this.saveChecklist()
-        // },
-        // next() {
-        //     // console.log('event',event);
-        //     // console.log(this.$refs.input.$el);
-        //     this.$refs.input.$el.click()
-        //     // event.target.click()
-        // }
 
     },
     computed: {
@@ -134,8 +90,6 @@ export default {
                 this.isDeleteContentTeleported = false
                 this.isNameContentTeleported = false
             }
-            // console.log('val', val);
-            // console.log('this.isDeleteContentTeleported', this.isDeleteContentTeleported);
         }
     }
 

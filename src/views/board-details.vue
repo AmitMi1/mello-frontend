@@ -4,13 +4,19 @@
     <board-header @shareBoard="shareBoard" @starBoard="starBoard" :board="board"></board-header>
     <router-view></router-view>
 
-    <div class="group-list flex">
+    <div v-dragscroll:nochilddrag class="group-list flex">
       <!-- <Container>  -->
-      <Container  :drop-placeholder="{ className: 
+      <Container :drop-placeholder="{ className: 
                 `col-drop`, 
               animationDuration: '100', 
               showOnTop: false }"
-              drag-class="col-drag" group-name="cols" tag="div" orientation="horizontal" @drop="onColumnDrop($event)" @touchend="onColumnDrop($event)">
+              drag-class="col-drag"
+              group-name="cols"
+              tag="div"
+              orientation="horizontal"
+              @drop="onColumnDrop($event)"
+              @touchend="handleEvent($event)"
+>
         <Draggable v-for="(group) in board.groups" :key="group.id">
           <div>
             <board-group
@@ -30,7 +36,7 @@
               showOnTop: true }"
               drag-class="item-drag"
                 @drop="(e) => onCardDrop(group.id, e)"
-                @touchend="(e) => onCardDrop(group.id, e)"
+                @touchend="handleEvent($event)"
               >
                 <task-preview
                   @due-soon="task.status = 'due-soon'"
@@ -51,15 +57,6 @@
           </div>
         </Draggable>
       </Container>
-      <!-- <Container 
-    :group="group"
-    orientation="vertical"
-    group-name="col-items"
-    :shouldAcceptDrop="(e, payload) =>  (e.groupName === 'col-items')"
-    :get-child-payload="getCardPayload(group.id)"
-    @drop="(e) => onCardDrop(group.id, e)">
-      </Container>-->
-      <!-- </Container> -->
       <group-add
         @addGroup="isAddingGroup = false"
         @saveGroup="updateGroup"
@@ -67,13 +64,11 @@
         :isAddingGroup="isAddingGroup"
       ></group-add>
     </div>
-    <!-- <p>{{board.title}}</p> -->
   </section>
 </template>
 
 <script>
 
-// import { boardService } from '../services/board.service.js'
 import { Container, Draggable } from "vue3-smooth-dnd";
 import { utilService } from "../services/util.service";
 import { userService } from "../services/user.service";
@@ -81,10 +76,7 @@ import boardGroup from "../components/board-group.vue";
 import groupAdd from "../components/group-add.vue";
 import boardHeader from "../components/board-header.vue";
 import taskPreview from "../components/task-preview.vue";
-/*import { SOCKET_EMIT_BOARD_WATCH } from "../services/socket.service";
-import { SOCKET_EMIT_BOARD_UPDATE } from "../services/socket.service";
-import bg from '../../src/assets/bg.'
-import TaskPreview from "../components/task-preview.vue";*/
+
 
 export default {
   name: 'board-details',
@@ -105,15 +97,18 @@ export default {
     taskPreview
   },
   async mounted() {
-    //  await this.loadBoard()
     const { boardId } = this.$route.params
     const board = await this.$store.dispatch({ type: 'loadCurrBoard', boardId })
-    // this.board = board
+    const user = userService.getLoggedinUser()
+    if(!user) this.$router.push('/')
+    const idx = this.board.members.findIndex(member => member._id === user._id)
+    if(this.board.createdBy._id !== user._id & idx === -1){
+      this.$router.push('/board')
+    }
     if (!this.board.style) return
     document.body.style = `
    background-image: url(${this.board.style.bg});
    background-color: ${this.board.style.bg};`
-   console.log(this.board);
   },
   unmounted(){
  document.body.style = `
@@ -128,6 +123,11 @@ export default {
     },
   },
   methods: {
+    handleEvent(ev){
+document.elementFromPoint(10, window.innerHeight-50).click();
+
+
+    },
     async starBoard(star){
       const board = this.$store.getters.currBoard
       board.star = star
@@ -142,42 +142,22 @@ export default {
     
     async saveTask(taskToSave, groupId) {
 
-      // console.log('hi');
-      // console.log(taskToSave, groupIdx);
       const board = await this.$store.dispatch({ type: 'saveTask', groupId, taskToSave })
-      // this.board = board
-      // this.loadBoard()
-      // this.board = board
-      // this.board.groups[groupIdx].tasks.findIndex(t => t.id === taskToSave.id)
-      // this.updateGroup(this.board.groups[groupIdx])
-      // await this.$store.dispatch({type: 'updateGroup', groupToSave})
-
-      // const idx = this.board.groups.findIndex(g => g.id === groupId)
-      // this.board.groups[idx].tasks
-      //this.socketUpdateBoard();
     },
     async removeGroup(group) {
       const board = await this.$store.dispatch({ type: 'removeGroup', group })
-      // this.board = board
-      // this.socketUpdateBoard();
     },
     async removeTask(task, group) {
       const board = await this.$store.dispatch({ type: 'removeTask', groupId: group.id, taskId: task.id })
-      // this.board = board
-      //this.socketUpdateBoard();
     },
     async updateGroup(groupToSave) {
       if (!this.isAddingGroup) this.isAddingGroup = true
-      // console.log(groupToSave);
       if (!groupToSave.title) return
       const board = await this.$store.dispatch({ type: 'updateGroup', groupToSave })
-      // this.board = board
-      //this.socketUpdateBoard();
     },
     async loadBoard() {
       const { boardId } = this.$route.params
       const board = await this.$store.dispatch({ type: 'loadCurrBoard', boardId })
-      // const board = this.$store.getters.currBoard
       this.board = board
       if (!this.board.style) return board
       document.body.style = `
@@ -187,13 +167,10 @@ export default {
     },
     async onColumnDrop(dropResult) {
       const scene = Object.assign({}, this.board)
-      console.log(scene);
       dropResult.payload = {}
       dropResult.payload.data = this.board.groups[dropResult.removedIndex]
       dropResult.payload.id = this.board.groups[dropResult.removedIndex].id
-      console.log('drop>>', dropResult);
       scene.groups = utilService.applyDrag(scene.groups, dropResult)
-      // this.board = JSON.parse(JSON.stringify(scene))
       const board = await this.$store.dispatch({ type: 'saveCurrBoard', boardToSave: scene })
     },
     getCardPayload(groupId) {
@@ -202,7 +179,6 @@ export default {
       }
     },
     async onCardDrop(groupId, dropResult) {
-      console.log(dropResult);
       // check if element where ADDED or REMOVED in current collumn
       if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
 
@@ -213,48 +189,26 @@ export default {
 
         // check if element was ADDED in current column
         if ((dropResult.removedIndex == null && dropResult.addedIndex >= 0)) {
-          // your action / api call
-          // dropResult.payload.loading = true
-          // simulate api call
-          // setTimeout(function(){ dropResult.payload.loading = false }, (Math.random() * 5000) + 1000); 
         }
 
         newColumn.tasks = utilService.applyDrag(newColumn.tasks, dropResult)
         scene.groups.splice(itemIndex, 1, newColumn)
-        // this.board = JSON.parse(JSON.stringify(scene))
         const board = await this.$store.dispatch({ type: 'saveCurrBoard', boardToSave: scene })
-        // this.board = board
-        // this.$emit('move', scene)
-        // console.log(scene);
-        // this.board = scene
       }
     },
-    // async move(boardToSave){
-    //   const board = await this.$store.dispatch({type: 'saveCurrBoard', boardToSave})
-    //   this.loadBoard()
-    // },
     goToDetail(group, task) {
       this.$router.push(`/board/${this.board._id}/task/${group.id}/${task.id}`)
     },
-    /*socketUpdateBoard() {
-     console.log("SOCKETUPDATEBOARDMOTHREREUFJKER SOCKETING");
-     socketService.emit(SOCKET_EMIT_BOARD_UPDATE, this.unfilteredBoard);
-   },*/
+   
   },
   watch: {
     '$route.params.boardId'(id) {
-      if (!id) return
       console.log('Changed to', id)
+      if (!id) return
+      console.log(this.board);
       this.loadBoard()
       { immediate: true }
     },
-    // '$route.params'(p) {
-    //   if (!p.boardId) return
-    //   if (!p.taskId)
-    //     this.loadBoard()
-    //   //  socketService.emit(SOCKET_EMIT_BOARD_WATCH, this.boardId);
-    //   { immediate: true }
-    // },
   }
 }
 </script>

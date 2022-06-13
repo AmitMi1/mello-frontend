@@ -8,8 +8,6 @@
                 :alt="currStatus.txt"
             />
             <input class="search" type="file" v-focus @change="onUpload" />
-            <!-- <span class="secondary-section-title">Attach a link</span>
-            <button class="primary-btn">Attach</button>-->
         </label>
         <div class="status-msg flex align-center" v-else-if="currStatus.isLoading">
             <span
@@ -32,17 +30,13 @@
             >{{ currStatus.txt }}</span>
             <img class="status-icon" src="../../../src/assets/ezgif.com-gif-maker.gif" />
         </div>
-        <!-- <pre>{{todosToCopy}}</pre> -->
-        <!-- <pre>{{ taskToEdit }}</pre> -->
-        <!-- <pre>{{ checklists }}</pre> -->
+    
     </section>
 </template>
 
 <script>
-import { utilService } from "../../services/util.service"
 import { uploadImg } from "../../services/imgUpload.service";
 
-// C:\dev\cajan22\sprint 4\frontend\src\assets\Upload-PNG-Image-File.png
 export default {
     name: 'attachment-edit',
     props: {
@@ -79,13 +73,11 @@ export default {
     },
     methods: {
         async onUpload(ev) {
-            console.log('ev.target.files[0]', ev.target.files[0]);
             this.currStatus = this.statusOptions.loading;
             try {
                 const attachment = await uploadImg(ev)
                 if (!this.taskToEdit.attachments) this.taskToEdit.attachments = [];
                 this.taskToEdit.attachments.push(attachment)
-                console.log('this.taskToEdit', this.taskToEdit);
                 this.$emit('taskUpdated', this.taskToEdit)
                 this.currStatus = this.statusOptions.complete
             } catch (err) {
@@ -93,41 +85,14 @@ export default {
             }
             setTimeout(() => {
                 this.closeModal()
-                // setTimeout( () =>
                 this.$refs.checkmarkImg.src += `?v=${Date.now()}`
-                // , 500)
             }, 2000)
         },
         closeModal() {
             this.$emit('editModalClosed')
         }
-        // createChecklist() {
-        //     this.newChecklist.id = utilService.makeId()
-        //     this.newChecklist.todos = JSON.parse(JSON.stringify(this.todosToCopy.flat()))
-        //         .map(todo => {
-        //             console.log('todo', todo);
-        //             todo.id = utilService.makeId()
-        //             return todo
-        //         })
-        //     // console.log('newTodos', newTodos);
-        //     // console.log('this.todosToCopy',this.todosToCopy);
-        //     if (!this.taskToEdit.checklists) this.taskToEdit.checklists = [];
-        //     this.taskToEdit.checklists.push(JSON.parse(JSON.stringify(this.newChecklist)))
-        //     // console.log('this.taskToEdit', this.taskToEdit);
-        //     this.$emit('taskUpdated', this.taskToEdit)
-        //     this.newChecklist = {
-        //         id: null,
-        //         title: 'Checklist',
-        //         todos: []
-        //     }
-        //     this.$emit('modalClosed')
-
-        // }
     },
     computed: {
-        // checklists() {
-        //     return this.$store.getters.currBoardChecklists
-        // },
         taskToEdit() {
             return JSON.parse(JSON.stringify(this.currTask))
         }

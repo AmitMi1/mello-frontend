@@ -19,7 +19,6 @@
                     ></span>
                 </li>
             </ul>
-            <!-- <button class="btn-default">Create a new label</button> -->
         </div>
         <div v-else class="label-editor">
             <div
@@ -27,7 +26,6 @@
                 :class="[checkIfTaskLabel(labelInEdit) ? 'selected' : '']"
                 :style="{ 'background-color': labelInEdit.color }"
             >
-                <!-- <span>{{ labelInEdit.title }}</span> -->
             <input
                 type="text"
                 placeholder="Enter label name..."
@@ -40,8 +38,6 @@
             </div>
 
         </div>
-        <!-- <pre>{{ taskToEdit }}</pre> -->
-        <!-- <pre>{{ labels }}</pre> -->
     </section>
 </template>
 
@@ -60,18 +56,14 @@ export default {
     methods: {
         checkIfTaskLabel(label) {
             if (!this.taskToEdit.labelIds) return false
-            // console.log(label);
             return this.taskToEdit.labelIds.some(id => id === label.id)
         },
         toggleLabelFromTask(label) {
-            // console.log('label',label);
-            // console.log('this.taskToEdit.labelIds', this.taskToEdit.labelIds); this.taskToEdit.labelIds
             if (!this.taskToEdit.labelIds) this.taskToEdit.labelIds = [];
             var labelIds = this.taskToEdit.labelIds
             const idx = labelIds.findIndex(id => id === label.id)
             if (idx === -1) labelIds.push(label.id)
             else labelIds.splice(idx, 1)
-            // console.log('this.taskToEdit',this.taskToEdit);
             this.$emit('taskUpdated', this.taskToEdit)
         },
         saveLabel(){

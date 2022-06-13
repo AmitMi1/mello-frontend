@@ -41,7 +41,6 @@ export default {
   },
   async mounted(){
    const res = await this.$store.dispatch({type: 'loadBoards'})
-    console.log(this.boards);
   },
   computed: {
     boards(){

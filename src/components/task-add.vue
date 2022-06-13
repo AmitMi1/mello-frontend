@@ -30,12 +30,8 @@ export default {
     methods: {
         saveTask() {
             if (!this.isSave) this.task.title = ''
-            console.log(this.task)
             this.$emit('saveTask', this.task)
         },
-        func() {
-            console.log('hover');
-        }
     },
     mounted() {
         this.$refs.taskTitle.focus()

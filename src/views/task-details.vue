@@ -145,17 +145,7 @@
           >All actions will be removed from the activity feed and you won’t be able to re-open the card. There is no undo.</p>
           <button @click="removeTask" class="delete-btn btn">Delete</button>
         </Teleport>
-        <!-- <main-edit-modal v-if="editModalStatus.isOpen && editModalStatus.editType==='search-photo'" modal-title="se" @editModalClosed="closeEditModal" :pos="editModalStatus.pos">
-          <component
-            :is="editModalStatus.editType"
-            :currTask="currTask"
-            @taskUpdated="saveCurrTask"
-            @editModalClosed="closeEditModal"
-          ></component>
-        </main-edit-modal>-->
-        <!-- <date-edit></date-edit> -->
-        <!-- <pre>{{ currTask }}</pre> -->
-        <!-- <pre>{{ currTaskLabels }}</pre> -->
+  
       </div>
     </div>
   </section>
@@ -186,16 +176,7 @@ export default {
     this.parentGroupId = this.$route.params.groupId
     this.parentGroupName = this.$store.getters.currBoard.groups.find(g => g.id === this.parentGroupId).title
     const { groupId, taskId } = this.$route.params
-    // this.currTask = await this.$store.dispatch({ type: 'getTaskById', groupId: this.parentGroupId, taskId: this.currTaskId })
-    // if (!this.currTask.labelIds) return
-    // This should be computed boardLabels
     await this.$store.dispatch({ type: 'loadCurrTask', groupId, taskId })
-    // console.log('this.currTask after dispatch', this.currTask)
-    // const boardLabels = this.$store.getters.currBoardLabels
-    // Should be in a function
-    // if (!this.currTask.labelIds || !this.currTask.labelIds.length) return
-    // this.currTaskLabels = this.boardLabels.filter(label =>
-    //   this.currTask.labelIds.includes(label.id))
   },
   data() {
     return {
@@ -207,8 +188,6 @@ export default {
       },
       isDeleteContentTeleported: false,
       isEditModalMounted: false,
-      // currTask: null,
-      // currTaskLabels: null,
       currTaskId: '',
       parentGroupId: '',
       parentGroupName: ''
@@ -216,7 +195,6 @@ export default {
   },
   mounted() {
 
-    // console.log('check', this.currTask.style.bg.split('')[0] !== '#');
   },
 
   methods: {
@@ -235,8 +213,6 @@ export default {
         groupId: this.parentGroupId,
         taskToSave: JSON.parse(JSON.stringify(taskToSave))
       })
-      //await this.socketUpdateBoard();
-      console.log('Current task saved!');
       /// This function returns a promise with the value of 
       //the current board. I'm not sure if methods 
       //inside this component that call SaveCurrTask 
@@ -250,12 +226,10 @@ export default {
       this.$router.push(`/board/${board._id}`)
     },
     updateDesc(updatedDesc) {
-      console.log('updatedDesc', updatedDesc);
       this.currTask.description = updatedDesc
       this.saveCurrTask()
     },
     updateChecklist(updatedChecklist) {
-      // console.log('updatedChecklist', updatedChecklist);
       const idx = this.currTask.checklists.findIndex(cl => cl.id === updatedChecklist.id)
       this.currTask.checklists[idx] = updatedChecklist
       this.saveCurrTask()
@@ -279,19 +253,13 @@ export default {
     closeModal() {
       this.saveCurrTask()
       const boardId = this.$route.params.boardId
-      // console.log('boardId',boardId);
       this.$router.push({ name: 'board', params: { boardId } })
-      //this.socketUpdateBoard();
     },
     openDeleteModal(event) {
-      // console.log('event', event);
       this.isDeleteContentTeleported = true
       this.openEditModal(event, 'teleportContainer', 'Delete card?')
     },
     openEditModal(event, editType, title = '') {
-      console.log('event', event);
-      // console.log('editType',editType);
-      // console.log('event.target.getBoundingClientRect()', event.target.getBoundingClientRect());
       var pos;
       if (!event) pos = this.pos;
       else {
@@ -306,7 +274,6 @@ export default {
         switch (editType) {
           case 'labels-edit':
           case 'labelsEdit':
-            // console.log('inside switch labels edit');
             title = 'Labels'
             break
           case 'members-edit':
@@ -334,9 +301,6 @@ export default {
             title = 'Photo search'
         }
       }
-
-      console.log('title', title);
-
       const status = {
         isOpen: true,
         editType,
@@ -344,7 +308,6 @@ export default {
         title
       }
       this.editModalStatus = status
-      // this.$store.commit({ type: 'toggleEditModal', isOpen: true, editType, currTask: this.currTask, parentGroupId: this.parentGroupId })
     },
     closeEditModal() {
       this.editModalStatus = {
@@ -387,15 +350,8 @@ export default {
       if (!val) {
         this.isDeleteContentTeleported = false
       }
-      // console.log('val', val);
-      // console.log('this.isDeleteContentTeleported', this.isDeleteContentTeleported);
     }
   },
-  // watch: {
-  //   this.updatedTask: {
-
-  //   }
-  // },
   components: {
     mainEditModal,
     trelloLabels,

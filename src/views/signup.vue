@@ -62,7 +62,6 @@ export default {
       }
     },
     async signup() {
-      console.log(this.user);
       await this.$store.dispatch({ type: "signup", userCred: this.user });
       const user = await this.$store.dispatch({
           type: "login",
@@ -70,9 +69,6 @@ export default {
         });
 
         if (user) this.$router.push(`/board`);
-      // this.$router.push('/board');
-      //add(this.user);
-      //this.$router.push(`/b/${this.$store.getters.boards[0]._id}`);
     },
   },
 };

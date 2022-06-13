@@ -26,7 +26,6 @@
 
 <script>
 
-import { filter } from 'lodash'
 import { unsplashService } from '../../services/unsplash.service'
 import { utilService } from '../../services/util.service'
 
@@ -55,7 +54,6 @@ export default {
         }
         this.res = await unsplashService.query(val)
         this.isSearching = true
-            console.log(this.res)
         this.res = this.res.results.map(img =>{
            return {
                small: img.urls.thumb,
@@ -87,8 +85,6 @@ export default {
     computed: {
         taskToEdit() {
             const task = JSON.parse(JSON.stringify(this.currTask))
-            // if(!task.style) task.style = {}
-            // task.style.bg = ''
             return task
         },
     },

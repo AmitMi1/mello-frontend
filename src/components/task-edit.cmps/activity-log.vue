@@ -12,15 +12,12 @@
                 ></trello-txt-input>
             </li>
             <li v-for="comment in updatedComments" :key="comment.id">
-                <!-- <div class="flex-container"> -->
                 <user-avatar :user="comment.byMember"></user-avatar>
                 <span class="user-fullname">{{ comment.byMember.fullname }}</span>
                 <span class="comment-time">{{ formatCreatedAt(comment.createdAt) }}</span>
-                <!-- </div> -->
                 <p>{{ comment.txt }}</p>
             </li>
-            <!-- <pre>{{updatedComments}}</pre> -->
-            <!-- <pre>{{byMember}}</pre> -->
+            
         </ul>
     </section>
 </template>
@@ -42,8 +39,7 @@ export default {
         return {
             updatedComments: (this.comments) ? JSON.parse(JSON.stringify(this.comments)) : [],
 
-            byMember: this.$store.getters.getMyMiniUser
-            //should be the logged in user
+            byMember: this.$store.getters.loggedinUser
         }
     },
     methods: {
@@ -65,7 +61,6 @@ export default {
     },
     computed: { 
     user(){
-        console.log(this.$store.getters.loggedinUser);
         return this.$store.getters.loggedinUser
     }
     },

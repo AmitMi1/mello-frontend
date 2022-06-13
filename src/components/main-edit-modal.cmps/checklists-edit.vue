@@ -14,9 +14,6 @@
             </optgroup>
         </select>
         <button class="primary-btn" @click="createChecklist">Add</button>
-        <!-- <pre>{{todosToCopy}}</pre> -->
-        <!-- <pre>{{ taskToEdit }}</pre> -->
-        <!-- <pre>{{ checklists }}</pre> -->
     </section>
 </template>
 
@@ -43,15 +40,11 @@ export default {
             this.newChecklist.id = utilService.makeId()
             this.newChecklist.todos = JSON.parse(JSON.stringify(this.todosToCopy.flat()))
                 .map(todo => {
-                    console.log('todo',todo);
                     todo.id = utilService.makeId()
                     return todo
                 })
-            // console.log('newTodos', newTodos);
-            // console.log('this.todosToCopy',this.todosToCopy);
             if (!this.taskToEdit.checklists) this.taskToEdit.checklists = [];
             this.taskToEdit.checklists.push(JSON.parse(JSON.stringify(this.newChecklist)))
-            // console.log('this.taskToEdit', this.taskToEdit);
             this.$emit('taskUpdated', this.taskToEdit)
             this.newChecklist = {
                 id: null,

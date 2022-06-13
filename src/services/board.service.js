@@ -583,12 +583,7 @@ async function remove(boardId) {
 }
 
 async function save(board) {
-    // const boardToSave = JSON.parse(JSON.stringify(board))
-    // console.log(board);
-    // if (boardToSave._id) return storageService.put(STORAGE_KEY, boardToSave);
-    // return storageService.post(STORAGE_KEY, boardToSave)
     try {
-        // debugger
         if (board._id) {
             const savedBoard = await httpService.put(`board`, board)
             return savedBoard

@@ -18,7 +18,6 @@
 
  <script>
 import userAvatar from "../components/user-avatar.vue";
-// import showMenu from "../components/show-menu.vue";
 import boardShareMenu from "./board-share-menu.vue";  
 
 export default {
@@ -30,7 +29,6 @@ export default {
   },
   components: {
     userAvatar,
-    // showMenu,
     boardShareMenu,
   },
   data() {
@@ -54,9 +52,6 @@ export default {
     },
     userWorkspace(){
       const name = this.board.createdBy.fullname.split(' ')
-      console.log(name);
-      // const lName = this.board.createdBy.fullname.split(' ')
-      // console.log(name[1].split());
       return name[0] +' ' +  name[1].split('')[0] + `'s`
     },
     checkStar(){

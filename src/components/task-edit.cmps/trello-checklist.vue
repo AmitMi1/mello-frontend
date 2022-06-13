@@ -76,8 +76,6 @@ export default {
             this.saveChecklist()
         },
         updateTodoTitle(updatedTitle, todoId) {
-            // console.log('updatedTitle', updatedTitle);
-            // this.$emit('updated', this.updatedDesc)
             const idx = this.updatedChecklist.todos.findIndex(todo => todo.id === todoId)
             this.updatedChecklist.todos[idx].title = updatedTitle
             this.saveChecklist()
@@ -100,10 +98,7 @@ export default {
             this.saveChecklist()
         },
         next() {
-            // console.log('event',event);
-            // console.log(this.$refs.input.$el);
             this.$refs.input.$el.click()
-            // event.target.click()
         },
         openDeleteModal(event) {
             this.isDeleteContentTeleported = true
@@ -129,8 +124,6 @@ export default {
             if (!val) {
                 this.isDeleteContentTeleported = false
             }
-            // console.log('val', val);
-            // console.log('this.isDeleteContentTeleported', this.isDeleteContentTeleported);
         }
     },
     components: {

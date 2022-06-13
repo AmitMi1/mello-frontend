@@ -19,10 +19,17 @@
     }
 
     .custom-menu-container {
-        @media (max-width: 560px) {
-            top: 310px;
-            left: 50%;
-            transform: translate(-50%, -50%);
+
+        // @media (max-width: 560px) {
+        //     top: 310px;
+        //     left: 50%;
+        //     transform: translate(-50%, -50%);
+        // }
+        @media (max-width: 780px) {
+            position: absolute;
+            top: 35px;
+            left: 30px;
+            // right: 135px;
         }
 
         z-index: 3;

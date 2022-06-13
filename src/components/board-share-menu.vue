@@ -43,20 +43,14 @@ export default {
     this.users = await userService.getUsers()
     const loggedInUser = userService.getLoggedinUser()
     this.users = this.users.filter(user=> user._id !== loggedInUser._id)
-    console.log(this.$route.params.boardId);
     this.board = await boardService.getById(this.$route.params.boardId)
     this.members = this.board.members
-    // console.log(this.users, loggedInUser);
   },
   mounted() {
-    console.log(this.$store.getters.currBoard);
   },
   methods: {
     checkMember(userId){
-      // console.log(this.members.findIndex(member=> member._id == userId));
       if (this.members.findIndex(member=> member._id == userId) !== -1){
-        // this.members = this.members
-        // this.$forceUpdate()
         return true
       }
       else return false
@@ -66,44 +60,22 @@ export default {
      this.members = this.board.members
      const idx = this.members.findIndex(member => member._id === userId)
       if (idx !== -1 ){
-        console.log('hi');
         return
       }
       this.$emit('shareBoard', userId)
       this.updateKey +=1
-//      const board = await this.$store.dispatch({ type: 'loadCurrBoard', boardId:this.board._id })
-// this.board = this.$store.getters.currBoard
-//       console.log(board);
-
-      // this.board = this.$store.getters.currBoard
-    // //   this.board = await boardService.getById(this.$route.params.boardId)
-    // this.members = this.board.members
-    // this.updateKey += 1
-    //   // this.$forceUpdate()
     },
     closeMenu(){
       this.$emit('closeMenu')
     },
-    async saveBoard(){
-      
-
-    }
   },
   computed: {
     
   },
   watch:{
      async '$route.params.boardId'(id) {
-      // if (!id) return
-      console.log('Changed to', this.board)
-          console.log(this.$store.getters.currBoard);
-// await this.$store.dispatch({ type: 'loadCurrBoard', boardId:id })
-// this.board = this.$store.getters.currBoard
       this.board = await boardService.getById(this.$route.params.boardId)
     this.members = this.board.members
-      // this.$forceUpdate()
-      // this.members = this.board.members
-      // { immediate: true }
     },
   }
  

@@ -53,9 +53,7 @@ export default {
     },
     methods: {
         saveTxt() {
-            console.log('saving Text!');
             if (!this.updatedTxt) {
-                console.log('this.denyEmptySave', this.denyEmptySave);
                 if (!this.denyEmptySave) this.isInEdit = false
                 return this.$emit('txtIsEmpty', '')
             }
@@ -64,7 +62,6 @@ export default {
             this.isInEdit = false
         },
         openEdit(event) {
-            console.log('event.target.tagName', typeof event.target.tagName);
             if (event.target.tagName === 'BUTTON') return
             this.isInEdit = true
         },
@@ -78,7 +75,6 @@ export default {
         },
         handleClickOutside() {
             if (!this.isInEdit) return
-            // this.saveTxt()
             if (!this.updatedTxt) this.cancel()
             else this.saveTxt()
         }

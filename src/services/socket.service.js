@@ -20,7 +20,6 @@ function createSocketService() {
   const socketService = {
     async setup() {
       socket = io(baseUrl)
-      console.log('socket', socket);
     },
     on(eventName, cb) {
       socket.on(eventName, cb)
@@ -72,13 +71,4 @@ function createDummySocketService() {
   }
   return socketService
 }
-
-
-// Basic Tests
-// function cb(x) {console.log('Got Baba:', x)}
-// socketService.on('baba', cb)
-// socketService.on('mama', console.log)
-// socketService.on('mama', alert)
-// socketService.emit('baba', 'DATA123')
-// socketService.off('baba', cb)
 

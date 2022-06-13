@@ -47,4 +47,18 @@
             top: 130px;
         }
     }
+
+    .sec {
+        height: 100px;
+        width: 100px;
+        background-color: red;
+        position: absolute;
+        // z-index: 10;
+        // top: 200px;
+        bottom: 0;
+
+        &:active {
+            background-color: #fff;
+        }
+    }
 }

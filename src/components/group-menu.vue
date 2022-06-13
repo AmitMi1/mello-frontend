@@ -32,14 +32,11 @@ export default {
   methods: {
     addTask(){
       this.$emit('newTask')
-      // this.menuOpen = false
-      // console.log('adding');
     },
     copyGroup(){
       this.$emit('copyGroup')
     },
     removeGroup(){
-      // console.log('hi');
       this.$emit('removeGroup')
     },
     closeMenu(){

@@ -59,7 +59,6 @@ async function login(userCred) {
 }
 async function signup(userCred) {
     try {
-        console.log(userCred);
         const user = await httpService.post('auth/signup', userCred)
         return _saveLocalUser(user)
     } catch (err) {
@@ -84,7 +83,7 @@ async function changeScore(by) {
 async function guest() {
     const user = await login({ username: 'amit', password: '123' })
     return user
-    // _saveLocalUser({ _id: '6245e54524c152b7c822ae91', fullname: 'Amit Miz', username: 'amit', password: '123', imgUrl: 'https://ca.slack-edge.com/T02L3AYJGN4-U02K3QJLCBH-762de20f3035-512', isAdmin: false })
+    // _saveLocalUser({ _id: '628e28f54c7c7448c470b089', fullname: 'Amit Miz', username: 'amit', imgUrl: 'https://ca.slack-edge.com/T02L3AYJGN4-U02K3QJLCBH-762de20f3035-512', color: '', email: 'amit.am130@gmail.com' })
 
 }
 
@@ -115,39 +114,4 @@ async function getMiniUser(userId) {
         throw err
     }
 }
-
-
-// (async ()=>{
-//     await userService.signup({fullname: 'Puki Norma', username: 'user1', password:'123',score: 10000, isAdmin: false})
-//     await userService.signup({fullname: 'Master Adminov', username: 'admin', password:'123', score: 10000, isAdmin: true})
-//     await userService.signup({fullname: 'Muki G', username: 'muki', password:'123', score: 10000})
-// })();
-
-
-
-// This IIFE functions for Dev purposes
-// It allows testing of real time updates (such as sockets) by listening to storage events
-// (async () => {
-//     var user = getLoggedinUser()
-//     // Dev Helper: Listens to when localStorage changes in OTHER browser
-
-//     // Here we are listening to changes for the watched user (comming from other browsers)
-//     window.addEventListener('storage', async () => {
-//         if (!gWatchedUser) return;
-//         const freshUsers = await storageService.query('user')
-//         const watchedUser = freshUsers.find(u => u._id === gWatchedUser._id)
-//         if (!watchedUser) return;
-//         if (gWatchedUser.score !== watchedUser.score) {
-//             console.log('Watched user score changed - localStorage updated from another browser')
-//             socketService.emit(SOCKET_EVENT_USER_UPDATED, watchedUser)
-//         }
-//         gWatchedUser = watchedUser
-//     })
-// })();
-
-// This is relevant when backend is connected
-// (async () => {
-//     var user = getLoggedinUser()
-//     if (user) socketService.emit('set-user-socket', user._id)
-// })();
 

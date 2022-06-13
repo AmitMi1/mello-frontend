@@ -39,15 +39,12 @@ export default {
     },
     methods: {
         openEditModal(event) {
-            console.log('event', event);
             this.$emit('editModalOpened', event, 'dateEdit')
         }
     },
     computed: {
         formatDueDate() {
             return format(this.dueDate, 'MMM d') + ' at ' + format(this.dueDate, 'HH:MM')
-            // const options = { month: 'long', day: '2-digit', hour: 'numeric', minute: 'numeric' }
-            // return new Date(this.dueDate).toLocaleString(undefined, options)
         }
     }
 }
